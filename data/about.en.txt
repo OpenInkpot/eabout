@@ -1,0 +1,10 @@
+<h1>Welcome to openinkpot</h1>
+<br>
+Visit openinkpot.org
+<br>
+ bla bla<br>
+<p>
+1 this page<br>
+2 misc info<br>
+3 installed packages<br>
+</p>
