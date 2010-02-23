@@ -22,15 +22,11 @@
 #include <libeoi_themes.h>
 #include <libeoi_battery.h>
 #include <libeoi_clock.h>
+#include <libeoi_help.h>
 #include <libchoicebox.h>
 #include <libkeys.h>
 #include "script.h"
 #include "eabout.h"
-
-#define THEME_EDJE "eabout"
-#define TEXTBOX_WIDGET_ID "eabout-textbox-widget"
-#define OVERVIEW_WIDGET_ID "eabout-overview-widget"
-#define MAIN_EDJE_ID "eabout-main-edje"
 
 static keys_t *_keys;
 
@@ -59,13 +55,23 @@ static void main_win_close_handler(Ecore_Evas *main_win __attribute__((unused)))
 
 
 static void
+eabout_default_footer(Evas *evas)
+{
+    Evas_Object *main_edje = evas_object_name_find(evas, MAIN_EDJE_ID);
+    edje_object_part_text_set(main_edje, "footer",
+        gettext("0 - Help, 2 - Packages version"));
+}
+
+static void
 eabout_page_handler(Evas_Object *object, int page, int pages,
     void *param __attribute__ ((unused)))
 {
     Evas *evas = evas_object_evas_get(object);
     Evas_Object *win = evas_object_name_find(evas, MAIN_EDJE_ID);
-    choicebox_aux_edje_footer_handler(win, "footer", page,
-                                              pages);
+    if(pages > 1)
+        choicebox_aux_edje_footer_handler(win, "footer", page, pages);
+    else
+        eabout_default_footer(evas);
 }
 
 /* Following function copypasted from gm/src/setup.c */
@@ -159,6 +165,7 @@ eabout_swap_widget(Evas *evas, const char *widget)
         evas_object_hide(obj);
     }
         evas_object_show(replacement);
+        evas_object_raise(replacement);
         edje_object_part_swallow(main_edje, "contents", replacement);
         evas_object_focus_set(replacement, 1);
     return replacement;
@@ -170,6 +177,7 @@ eabout_page_set(Evas *evas, const char *action)
     if(!strcmp(action, "Info")){
         Evas_Object *overview = eabout_swap_widget(evas, OVERVIEW_WIDGET_ID);
         eabout_version_draw(overview);
+        eabout_default_footer(evas);
         return;
     }
     if(!strcmp(action, "Misc"))
@@ -214,6 +222,13 @@ eabout_key_handler(void *data __attribute__((unused)),
     else if(!strcmp(action, "Quit"))
     {
         ecore_main_loop_quit();
+        return;
+    }
+    else if(!strcmp(action, "Help"))
+    {
+        eoi_help_show(evas, "eabout", NULL,
+            gettext("About OpenInkpot: Help"),
+            keys, "eabout");
         return;
     }
     eabout_page_set(evas, action);

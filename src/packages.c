@@ -126,7 +126,7 @@ _page_handler(Evas_Object *choicebox, int cur_page, int total_pages,
               void *param __attribute__((unused)))
 {
      Evas* canvas = evas_object_evas_get(choicebox);
-     Evas_Object* footer = evas_object_name_find(canvas, "main_edje");
+     Evas_Object* footer = evas_object_name_find(canvas, MAIN_EDJE_ID);
      choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
 }
 
@@ -139,15 +139,9 @@ _key_handler(void *param,
     Evas_Event_Key_Up *ev = event_info;
     const char *action = keys_lookup_by_event(keys,  "eabout", ev);
     if(!strcmp(action,"PageUp"))
-    {
         choicebox_prevpage(choicebox);
-        printf("prevpage\n");
-    }
     else if(!strcmp(action, "PageDown"))
-    {
-        printf("nextpage\n");
         choicebox_nextpage(choicebox);
-    }
 }
 
 Evas_Object *
@@ -155,9 +149,9 @@ eabout_packages_choicebox(Evas *canvas, keys_t *keys)
 {
     choicebox_info_t info = {
         .background = NULL,
-        .frame_theme_file = "choicebox",
-        .frame_theme_group = "full",
-        .item_theme_file = "eabout",
+        .frame_theme_file = THEME_EDJE,
+        .frame_theme_group = "packages-choicebox",
+        .item_theme_file = THEME_EDJE,
         .item_theme_group = "package-items",
         .handler = _handler,
         .draw_handler = _draw_handler,

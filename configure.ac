@@ -10,4 +10,4 @@ PKG_CHECK_MODULES(LIBKEYS, [libkeys])
 PKG_CHECK_MODULES(LIBEOI, [libeoi])
 PKG_CHECK_MODULES(LOPS, [liblops])
 
-AC_OUTPUT([Makefile src/Makefile scripts/Makefile data/Makefile themes/Makefile po/Makefile])
+AC_OUTPUT([Makefile src/Makefile scripts/Makefile data/Makefile themes/Makefile po/Makefile help/Makefile])

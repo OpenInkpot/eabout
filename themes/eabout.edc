@@ -36,6 +36,73 @@ styles {
     }
 }
 
+
+#define CLIPPER                                           \
+   part {                                                 \
+      name, "clipper";                                    \
+      type, RECT;                                         \
+      description {                                       \
+         state, "default" 0.0;                            \
+         color, 255 255 255 0;                            \
+         rel1 { relative, 0.0 0.0; offset, 0 0; }         \
+         rel2 { relative, 1.0 1.0; offset, -1 -1; }       \
+      }                                                   \
+      description {                                       \
+         state, "enabled" 0.0;                            \
+         inherit, "default" 0.0;                          \
+         color, 255 255 255 255;                          \
+      }                                                   \
+   }
+
+#define CONTENTS_SWALLOW(LEFT_OFFSET, LEFT_SHIFTED_OFFSET, RIGHT_OFFSET, RIGHT_SHIFTED_OFFSET) \
+   /* Contents */ \
+   part { \
+       name, "contents"; \
+       type, SWALLOW; \
+       clip_to, "clipper"; \
+       description { \
+           state, "default" 0.0; \
+           rel1 { relative, 0.0 0.0; offset, LEFT_OFFSET 0; } \
+           rel2 { relative, 1.0 1.0; offset, RIGHT_OFFSET -1; } \
+       } \
+       description { \
+           state, "shifted" 0.0; \
+           rel1 { relative, 0.0 0.0; offset, LEFT_SHIFTED_OFFSET 0; } \
+           rel2 { relative, 1.0 1.0; offset, RIGHT_SHIFTED_OFFSET -1; } \
+       } \
+   }
+
+#define STD_PROGRAMS(EVEN_STYLE, ODD_STYLE)                             \
+   programs {                                                           \
+      program {                                                         \
+         name, "set_number";                                            \
+         signal, "set_number,*";                                        \
+         script {                                                       \
+            new number_arg[100];                                        \
+            getsarg(0, number_arg, 100);                                \
+            new number_s[100];                                          \
+            strcut(number_s, number_arg, 11, 100);                      \
+            new number = atoi(number_s);                                \
+                                                                        \
+            if(number%2 == 0)                                           \
+            {                                                           \
+                set_state(PART:"clipper", "enabled", 0.0);              \
+                set_state(PART:"background-img", EVEN_STYLE, 0.0);      \
+            }                                                           \
+            else                                                        \
+            {                                                           \
+                set_state(PART:"clipper", "enabled", 0.0);              \
+                set_state(PART:"background-img", ODD_STYLE, 0.0);       \
+            }                                                           \
+         }                                                              \
+      }                                                                 \
+      program {                                                         \
+         name, "empty";                                                 \
+         signal, "empty";                                               \
+         script {                                                       \
+            set_state(PART:"clipper", "default", 0.0);                  \
+         }                                                              \
+      }
 collections {
 	group {
 		name, "eabout";
@@ -141,6 +208,33 @@ collections {
                 }
             }
         }
+    }
+    group {
+        name, "packages-choicebox";
+        parts {
+            CLIPPER
+            part {
+                name, "background-img";
+                type, RECT;
+                clip_to, "clipper";
+                description {
+                    state, "default" 0.0;
+                    color, 255 255 255 255;
+                    rel1 { relative, 0.0 0.0; offset, 0 0; }
+                    rel2 { relative, 0.0 0.0; offset, 600 39; }
+                }
+                description {
+                    state, "altername" 0.0;
+                    inherit, "default" 0.0;
+                    color, 0 255 255 255; 
+                }
+            }
+            CONTENTS_SWALLOW(0, 0, -1, -1)
+        }
+        data {
+            item, "min_height" 39;
+        }
+        STD_PROGRAMS("default", "alternate")
     }
 }
 
