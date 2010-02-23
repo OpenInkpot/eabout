@@ -37,7 +37,6 @@ static struct package_t *
 eabout_packages_parse_package(const char *line)
 {
     package_t *package = NULL;
-    printf("line: %s\n", line);
     char **tokens = ecore_str_split(line, " ", 0);
     if(!strcmp(tokens[2], "install"))
     {
@@ -78,7 +77,6 @@ eabout_load_packages_callback(Evas_Object *choicebox, const char *tmpfile,
         eabout_packages_free(packages);
     packages = eabout_load_packages_file(tmpfile);
     evas_object_data_set(choicebox, "dpkg", packages);
-    printf("%d packages loaded\n", eina_list_count(packages));
     choicebox_set_size(choicebox, eina_list_count(packages));
 }
 
@@ -117,8 +115,8 @@ _draw_handler(Evas_Object *choicebox, Evas_Object *item, int item_num,
         package_t *package = eina_list_nth(packages, item_num);
         if(package)
         {
-            edje_object_part_text_set(item, "title", package->package);
-            edje_object_part_text_set(item, "value", package->version);
+            edje_object_part_text_set(item, "package", package->package);
+            edje_object_part_text_set(item, "version", package->version);
         }
     }
 }
@@ -159,15 +157,15 @@ eabout_packages_choicebox(Evas *canvas, keys_t *keys)
         .background = NULL,
         .frame_theme_file = "choicebox",
         .frame_theme_group = "full",
-        .item_theme_file = "choicebox",
-        .item_theme_group = "item-settings",
+        .item_theme_file = "eabout",
+        .item_theme_group = "package-items",
         .handler = _handler,
         .draw_handler = _draw_handler,
         .page_handler = _page_handler,
         .close_handler = _close_handler,
     };
     Evas_Object *choicebox = choicebox_new(canvas, &info, NULL);
-    choicebox_set_hinted(choicebox, true);
+    choicebox_set_hinted(choicebox, false);
     evas_object_name_set(choicebox, "dpkg");
     eabout_load_packages(choicebox);
     evas_object_event_callback_add(choicebox,

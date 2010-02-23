@@ -22,6 +22,18 @@ styles {
         tag, "right" "+ align=right";
         tag, "/right" "- ";
 	}
+    style {
+        name, "packages";
+        base, "font=sans-serif font_size=20 color=#000 align=left valign=top";
+        tag, "inactive" "+color=#888";
+        tag, "/inactive" "-";
+    };
+    style {
+        name, "versions";
+        base, "font=sans-serif font_size=20 color=#000 align=right valign=top";
+        tag, "inactive" "+color=#888";
+        tag, "/inactive" "-";
+    }
 }
 
 collections {
@@ -48,7 +60,7 @@ collections {
 					text {
 						style, "textblock_style";
 						max, 0 1;
-						text, "Help is not yet available for this location";
+						text, "No data";
 					}
 					align, 0.5 0.0;
 				}
@@ -93,6 +105,39 @@ collections {
                     }
                     rel1 { relative, 0.0 1.0; to, "logo"; offset, 0 50; }
                     rel2 { relative, 1.0 1.0; to, "logo"; offset, 0 80; }
+                }
+            }
+        }
+    }
+    group {
+        name, "package-items";
+        parts {
+            part {
+                name, "package";
+                type, TEXTBLOCK;
+                description {
+                    state, "default" 0.0;
+                    text {
+                        style, "packages";
+                        min, 0 1;
+                    }
+                    align, 0.0 0.0;
+                    rel1 { relative, 0.0 0.0; offset, 3 0; }
+                    rel2 { relative, 1.0 0.0; offset, -4 0; }
+                }
+            }
+            part {
+                name, "version";
+                type, TEXTBLOCK;
+                description {
+                    state, "default" 0.0;
+                    text {
+                        style, "versions";
+                        min, 0 1;
+                    }
+                    align, 1.0 1.0;
+                    rel1 { relative, 0.0 0.0; offset, 3 -1; }
+                    rel2 { relative, 1.0 1.0; offset, -4 0; }
                 }
             }
         }
