@@ -125,9 +125,12 @@ static void
 _page_handler(Evas_Object *choicebox, int cur_page, int total_pages,
               void *param __attribute__((unused)))
 {
-     Evas* canvas = evas_object_evas_get(choicebox);
-     Evas_Object* footer = evas_object_name_find(canvas, MAIN_EDJE_ID);
-     choicebox_aux_edje_footer_handler(footer, "footer", cur_page, total_pages);
+     Evas *canvas = evas_object_evas_get(choicebox);
+     Evas_Object *edje = evas_object_name_find(canvas, MAIN_EDJE_ID);
+     Evas_Object *obj = edje_object_part_swallow_get(edje, "contents");
+     if(obj != choicebox)
+        return;
+     choicebox_aux_edje_footer_handler(edje, "footer", cur_page, total_pages);
 }
 
 static void

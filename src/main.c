@@ -93,6 +93,7 @@ eabout_version_draw(Evas_Object *item)
         close(fd);
     }
     edje_object_part_text_set(item, "version", version_str);
+    eabout_default_footer(evas_object_evas_get(item));
 }
 /* end of copypaste */
 
@@ -126,7 +127,6 @@ eabout_load_file(Evas_Object *textbox, const char *filename, bool br)
     fclose(stream);
 
     eoi_textbox_text_set(textbox, text);
-    printf("%s\n", text);
     free(text);
 }
 
@@ -152,10 +152,7 @@ eabout_swap_widget(Evas *evas, const char *widget)
     assert(main_edje);
     Evas_Object *replacement = evas_object_name_find(evas, widget);
     if(obj == replacement)
-    {
-        printf("Match\n");
         return replacement;
-    }
 
     if(!replacement)
     {
@@ -178,20 +175,28 @@ eabout_swap_widget(Evas *evas, const char *widget)
 static void
 eabout_page_set(Evas *evas, const char *action)
 {
+    Evas_Object *main_edje = evas_object_name_find(evas, MAIN_EDJE_ID);
     if(!strcmp(action, "Info")){
         Evas_Object *overview = eabout_swap_widget(evas, OVERVIEW_WIDGET_ID);
         eabout_version_draw(overview);
         eabout_default_footer(evas);
+        edje_object_part_text_set(main_edje, "title", gettext("Overview"));
         return;
     }
     if(!strcmp(action, "Misc"))
     {
         Evas_Object *textbox = eabout_swap_widget(evas, TEXTBOX_WIDGET_ID);
         eabout_script(textbox, PKGLIBDIR "/misc.sh");
+        eabout_default_footer(evas);
+        edje_object_part_text_set(main_edje, "title", gettext("System Report"));
         return;
     }
     if(!strcmp(action, "Versions"))
+    {
+        eabout_default_footer(evas);
         eabout_swap_widget(evas, "dpkg");
+        edje_object_part_text_set(main_edje, "title", gettext("Packages"));
+    }
 }
 
 
@@ -271,6 +276,7 @@ static void run()
     Evas_Object *packages =eabout_packages_choicebox(main_canvas, get_keys());
 
     eabout_page_set(main_canvas, "Info");
+
     evas_object_event_callback_add(textbox,
                                    EVAS_CALLBACK_KEY_UP,
                                    &eabout_pagination_key_handler, NULL);
