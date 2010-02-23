@@ -152,7 +152,10 @@ eabout_swap_widget(Evas *evas, const char *widget)
     assert(main_edje);
     Evas_Object *replacement = evas_object_name_find(evas, widget);
     if(obj == replacement)
+    {
+        printf("Match\n");
         return replacement;
+    }
 
     if(!replacement)
     {
@@ -162,12 +165,13 @@ eabout_swap_widget(Evas *evas, const char *widget)
     if(obj)
     {
         evas_object_focus_set(obj, 0);
+        edje_object_part_unswallow(main_edje, obj);
         evas_object_hide(obj);
     }
-        evas_object_show(replacement);
-        evas_object_raise(replacement);
-        edje_object_part_swallow(main_edje, "contents", replacement);
-        evas_object_focus_set(replacement, 1);
+    evas_object_show(replacement);
+    edje_object_part_swallow(main_edje, "contents", replacement);
+    evas_object_raise(replacement);
+    evas_object_focus_set(replacement, 1);
     return replacement;
 }
 
