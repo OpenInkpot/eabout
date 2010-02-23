@@ -22,7 +22,10 @@
 #include <libeoi_themes.h>
 #include <libeoi_battery.h>
 #include <libeoi_clock.h>
+#include <libchoicebox.h>
 #include <libkeys.h>
+#include "script.h"
+#include "eabout.h"
 
 #define THEME_EDJE "eabout"
 #define TEXTBOX_WIDGET_ID "eabout-textbox-widget"
@@ -56,7 +59,7 @@ static void main_win_close_handler(Ecore_Evas *main_win __attribute__((unused)))
 
 
 static void
-eabout_page_handler(Evas_Object *object, int page, int pages, void *data,
+eabout_page_handler(Evas_Object *object, int page, int pages,
     void *param __attribute__ ((unused)))
 {
     Evas *evas = evas_object_evas_get(object);
@@ -122,41 +125,17 @@ eabout_load_file(Evas_Object *textbox, const char *filename, bool br)
 }
 
 
-static int
-eabout_load_script_callback(void *data, int type, void *event)
+static void
+eabout_script_callback(Evas_Object *textbox, const char *tmpfile,
+    void *param __attribute__((unused)))
 {
-    Evas_Object *textbox = data;
-    char *tmpfile = evas_object_data_get(textbox, "script-tmpfile");
-    if(!tmpfile)
-    {
-        printf("Error, no tmpfile set\n");
-        return ECORE_CALLBACK_CANCEL;
-    }
     eabout_load_file(textbox, tmpfile, true);
-    unlink(tmpfile);
-    free(tmpfile);
-    evas_object_data_set(textbox, "script-tmpfile", NULL);
-    return ECORE_CALLBACK_CANCEL;
 }
 
 static void
-eabout_load_script(Evas_Object *textbox, const char *script)
+eabout_script(Evas_Object *textbox, const char *script)
 {
-    if(evas_object_data_get(textbox, "script-tmpfile"))
-    {
-        printf("Already run\n");
-        return;
-    }
-    char *tmpfile = strdup("/tmp/eaboutXXXXXX");
-    char *cmd;
-    mktemp(tmpfile);
-    asprintf(&cmd, "%s %s", script, tmpfile);
-    Ecore_Exe *exe = ecore_exe_run(cmd, NULL);
-    evas_object_data_set(textbox, "script-tmpfile", tmpfile);
-    ecore_event_handler_add(ECORE_EXE_EVENT_DEL,
-                            eabout_load_script_callback,
-                            textbox);
-    free(cmd);
+    eabout_load_script(textbox, script, eabout_script_callback, NULL);
 }
 
 static Evas_Object *
@@ -193,26 +172,45 @@ eabout_page_set(Evas *evas, const char *action)
         eabout_version_draw(overview);
         return;
     }
-    Evas_Object *textbox = eabout_swap_widget(evas, TEXTBOX_WIDGET_ID);
     if(!strcmp(action, "Misc"))
-        eabout_load_script(textbox, "/usr/lib/eabout/misc.sh");
-    else if(!strcmp(action, "Versions"))
-        eabout_load_script(textbox, "/usr/lib/eabout/dpkg.sh");
+    {
+        Evas_Object *textbox = eabout_swap_widget(evas, TEXTBOX_WIDGET_ID);
+        eabout_script(textbox, PKGLIBDIR "/misc.sh");
+        return;
+    }
+    if(!strcmp(action, "Versions"))
+        eabout_swap_widget(evas, "dpkg");
 }
 
 
 static void
-eabout_key_handler(void *data, Evas * evas, Evas_Object * obj, void *event_info)
-{
+eabout_pagination_key_handler(void *data __attribute__((unused)),
+                  Evas *evas,
+                  Evas_Object *textbox,
+                  void *event_info){
     keys_t *keys = get_keys();
-    const char *action = keys_lookup_by_event(keys, "eabout", event_info);
+    const char *action = keys_lookup_by_event(keys, "eabout",
+                        (Evas_Event_Key_Up *)event_info);
     if (!action || !strlen(action))
         return;
-    Evas_Object *textbox = evas_object_name_find(evas, TEXTBOX_WIDGET_ID);
+
     if (!strcmp(action, "PageDown"))
         eoi_textbox_page_next(textbox);
     else if (!strcmp(action, "PageUp"))
         eoi_textbox_page_prev(textbox);
+}
+
+static void
+eabout_key_handler(void *data __attribute__((unused)),
+                   Evas *evas,
+                   Evas_Object *obj __attribute__((unused)),
+                   void *event_info)
+{
+    keys_t *keys = get_keys();
+    const char *action = keys_lookup_by_event(keys, "eabout",
+            (Evas_Event_Key_Up *) event_info);
+    if (!action || !strlen(action))
+        return;
     else if(!strcmp(action, "Quit"))
     {
         ecore_main_loop_quit();
@@ -251,14 +249,22 @@ static void run()
                                                    THEME_EDJE,
                                                    "overview");
     evas_object_name_set(overview, OVERVIEW_WIDGET_ID);
+    Evas_Object *packages =eabout_packages_choicebox(main_canvas, get_keys());
 
     eabout_page_set(main_canvas, "Info");
+    evas_object_event_callback_add(textbox,
+                                   EVAS_CALLBACK_KEY_UP,
+                                   &eabout_pagination_key_handler, NULL);
     evas_object_event_callback_add(textbox,
                                    EVAS_CALLBACK_KEY_UP,
                                    &eabout_key_handler, NULL);
     evas_object_event_callback_add(overview,
                                    EVAS_CALLBACK_KEY_UP,
                                    &eabout_key_handler, NULL);
+    evas_object_event_callback_add(packages,
+                                   EVAS_CALLBACK_KEY_UP,
+                                   &eabout_key_handler, NULL);
+
 
     ecore_evas_show(main_win);
 
@@ -267,6 +273,7 @@ static void run()
     // FIXME: avoid segfault (crash unless delete textblock manually)
     evas_object_del(overview);
     evas_object_del(textbox);
+    evas_object_del(packages);
 }
 
 static
