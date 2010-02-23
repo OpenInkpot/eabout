@@ -1,3 +1,10 @@
+eabout (0.2) zelazny; urgency=low
+
+  * Add help
+  * Implement facny package listing
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Tue, 23 Feb 2010 06:11:40 +0200
+
 eabout (0.1) zelazny; urgency=low
 
   * Inirial version
