@@ -102,7 +102,9 @@ styles {
          script {                                                       \
             set_state(PART:"clipper", "default", 0.0);                  \
          }                                                              \
-      }
+      }                                                                 \
+    }
+
 collections {
 	group {
 		name, "eabout";
@@ -209,6 +211,7 @@ collections {
             }
         }
     }
+
     group {
         name, "packages-choicebox";
         parts {
@@ -235,6 +238,27 @@ collections {
             item, "min_height" 39;
         }
         STD_PROGRAMS("default", "alternate")
+    }
+    group {
+        name, "packages-choicebox-background";
+        parts {
+           part {
+               name, "background";
+               type, RECT;
+               description {
+                   state, "default" 0.0;
+                   color, 255 255 255 255;
+               }
+            }
+        }
+    }
+    group {
+        name, "packages-choicebox-filler";
+        parts {
+        }
+        data {
+            item, "height" 0;
+        }
     }
 }
 
