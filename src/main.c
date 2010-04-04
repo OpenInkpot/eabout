@@ -109,7 +109,10 @@ eabout_load_text_file_internal(const char *filename, bool br)
 
     f = fopen(filename, "r");
     if (!f)
+    {
+        fprintf(stderr, "can't open %s\n", filename);
         return NULL;
+    }
 
     stream = open_memstream(&text, &size);
 
@@ -124,6 +127,7 @@ eabout_load_text_file_internal(const char *filename, bool br)
 
     fclose(f);
     fclose(stream);
+    return text;
 }
 
 char *

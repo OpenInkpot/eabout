@@ -45,6 +45,9 @@ eabout_load_info()
     struct sysinfo si;
     eabout_info *info=calloc(1, sizeof(eabout_info));
     info->version = eabout_load_text_file("/etc/openinkpot-version");
+    char *eol = strchr(info->version, '\n');
+    if(eol)
+        *eol='\0';
     Efreet_Ini *ini = efreet_ini_new("/etc/eabout.conf");
     if(ini)
     {
