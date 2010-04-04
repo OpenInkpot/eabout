@@ -368,7 +368,7 @@ void exit_all(void *param __attribute__((unused))) {
 int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
     setlocale(LC_ALL, "");
-    textdomain("gm");
+    textdomain("eabout");
     if(!evas_init())
         err(1, "Unable to initialize Evas\n");
     if(!ecore_init())
