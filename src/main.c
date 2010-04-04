@@ -59,7 +59,7 @@ eabout_default_footer(Evas *evas)
 {
     Evas_Object *main_edje = evas_object_name_find(evas, MAIN_EDJE_ID);
     edje_object_part_text_set(main_edje, "footer",
-        gettext("0 - Help, 2 - Packages version"));
+        gettext("OK - Packages version"));
 }
 
 static void
@@ -97,11 +97,10 @@ eabout_version_draw(Evas_Object *item)
 }
 /* end of copypaste */
 
-
-/* FIXME: copypaste from libeoi, must be  textbox API */
-static void
-eabout_load_file(Evas_Object *textbox, const char *filename, bool br)
+static char *
+eabout_load_text_file_internal(const char *filename, bool br)
 {
+
     FILE *f;
     FILE *stream;
     size_t size;
@@ -110,7 +109,7 @@ eabout_load_file(Evas_Object *textbox, const char *filename, bool br)
 
     f = fopen(filename, "r");
     if (!f)
-        return;
+        return NULL;
 
     stream = open_memstream(&text, &size);
 
@@ -125,9 +124,49 @@ eabout_load_file(Evas_Object *textbox, const char *filename, bool br)
 
     fclose(f);
     fclose(stream);
+}
 
+char *
+eabout_load_text_file(const char *filename)
+{
+    return eabout_load_text_file_internal(filename, false);
+}
+
+static void
+eabout_load_file(Evas_Object *textbox, const char *filename, bool br)
+{
+    char *text = eabout_load_text_file_internal(filename, br);
     eoi_textbox_text_set(textbox, text);
     free(text);
+}
+
+static void
+eabout_fill_info(Evas_Object *textbox)
+{
+    char *text;
+    size_t size;
+    struct eabout_info *info = eabout_load_info();
+    FILE *stream = open_memstream(&text, &size);
+    /* format "overview" text */
+    fprintf(stream, "%s: %s<br>", gettext("Device name"), info->device_name);
+    fprintf(stream, "%s: %s\n<br>", gettext("Firmware version"), info->version);
+    fprintf(stream, "%s: %s (%s MHz)<br>", gettext("CPU"),
+                    info->cpu, info->cpu_freq);
+    fprintf(stream, "%s: %dMB<br>", gettext("RAM"), info->ram);
+    fprintf(stream, "%s: %dMB (%s: %dMB)<br>",
+        gettext("Internal memory"), info->storage,
+        gettext("Available for user"), info->storage_avail);
+    fprintf(stream, "%s: %dMB (%s: %dMB)<br>",
+        gettext("Memory card"), info->card,
+        gettext("Available for user"), info->card_avail);
+    fprintf(stream, "%s: %s<br>", gettext("Manufacturer website"),
+            info->vendor_site);
+    fprintf(stream, "%s: %s<br>", gettext("Developers website"),
+            info->developers_site);
+    fclose(stream);
+    eoi_textbox_text_set(textbox, text);
+    free(text);
+    eabout_free_info(info);
 }
 
 
@@ -178,9 +217,9 @@ eabout_page_set(Evas *evas, const char *action)
     Evas_Object *main_edje = evas_object_name_find(evas, MAIN_EDJE_ID);
     if(!strcmp(action, "Info")){
         Evas_Object *overview = eabout_swap_widget(evas, OVERVIEW_WIDGET_ID);
-        eabout_version_draw(overview);
         eabout_default_footer(evas);
         edje_object_part_text_set(main_edje, "title", gettext("Overview"));
+        eabout_fill_info(overview);
         return;
     }
     if(!strcmp(action, "Misc"))
@@ -204,7 +243,8 @@ static void
 eabout_pagination_key_handler(void *data __attribute__((unused)),
                   Evas *evas,
                   Evas_Object *textbox,
-                  void *event_info){
+                  void *event_info)
+{
     keys_t *keys = get_keys();
     const char *action = keys_lookup_by_event(keys, "eabout",
                         (Evas_Event_Key_Up *)event_info);
@@ -215,6 +255,23 @@ eabout_pagination_key_handler(void *data __attribute__((unused)),
         eoi_textbox_page_next(textbox);
     else if (!strcmp(action, "PageUp"))
         eoi_textbox_page_prev(textbox);
+}
+
+static void
+eabout_packages_key_handler(void *data __attribute__((unused)),
+                   Evas *evas,
+                   Evas_Object *obj __attribute__((unused)),
+                   void *event_info)
+{
+    keys_t *keys = get_keys();
+    const char *action = keys_lookup_by_event(keys, "eabout",
+            (Evas_Event_Key_Up *) event_info);
+    if (!action || !strlen(action))
+        return;
+    else if(!strcmp(action, "Quit"))
+    {
+        eabout_page_set(evas, "Info");
+    }
 }
 
 static void
@@ -265,19 +322,21 @@ static void run()
     eoi_run_battery(main_canvas_edje);
     evas_object_show(main_canvas_edje);
 
+    Evas_Object *overview = eoi_textbox_new(main_canvas, THEME_EDJE, "eabout",
+        eabout_page_handler);
+    evas_object_name_set(overview, OVERVIEW_WIDGET_ID);
     Evas_Object *textbox = eoi_textbox_new(main_canvas, THEME_EDJE, "eabout",
         eabout_page_handler);
     evas_object_name_set(textbox, TEXTBOX_WIDGET_ID);
 
-    Evas_Object *overview = eoi_create_themed_edje(main_canvas,
-                                                   THEME_EDJE,
-                                                   "overview");
-    evas_object_name_set(overview, OVERVIEW_WIDGET_ID);
     Evas_Object *packages =eabout_packages_choicebox(main_canvas, get_keys());
 
     eabout_page_set(main_canvas, "Info");
 
     evas_object_event_callback_add(textbox,
+                                   EVAS_CALLBACK_KEY_UP,
+                                   &eabout_pagination_key_handler, NULL);
+    evas_object_event_callback_add(overview,
                                    EVAS_CALLBACK_KEY_UP,
                                    &eabout_pagination_key_handler, NULL);
     evas_object_event_callback_add(textbox,
@@ -288,7 +347,7 @@ static void run()
                                    &eabout_key_handler, NULL);
     evas_object_event_callback_add(packages,
                                    EVAS_CALLBACK_KEY_UP,
-                                   &eabout_key_handler, NULL);
+                                   &eabout_packages_key_handler, NULL);
 
 
     ecore_evas_show(main_win);
@@ -319,6 +378,8 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
     if(!edje_init())
         err(1, "Unable to initialize Edje\n");
 
+    efreet_init();
+
     ecore_x_io_error_handler_set(exit_all, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
 
@@ -331,6 +392,7 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
     edje_file_cache_set(0);
     edje_collection_cache_set(0);
 
+    efreet_shutdown();
     ecore_evas_shutdown();
     ecore_shutdown();
     evas_shutdown();

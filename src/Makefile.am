@@ -1,5 +1,5 @@
 bin_PROGRAMS = eabout
-eabout_SOURCES = main.c script.c packages.c
+eabout_SOURCES = main.c script.c packages.c info.c
 
 AM_CFLAGS = --std=gnu99 -W -Wall \
     -DTHEME_DIR='"$(pkgdatadir)/themes/"' \

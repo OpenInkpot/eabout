@@ -11,8 +11,15 @@ Standards-Version: 3.8.3
 Package: eabout
 Priority: optional
 Architecture: any
-Depends: ${shlibs:Depends}, oi-system-report
+Depends: ${shlibs:Depends}, oi-system-report, eabout-settings | eabout-settings-azbooka
 Description: About dialog
+
+Package: eabout-settings-azbooka
+Priority: optional
+Provides: eabout-settings
+Architecture: any
+Depends: eabout
+Description: vendor specific data for eabout
 
 Package: eabout-dbg
 Priority: extra
