@@ -1,3 +1,9 @@
+eabout (0.4) zelazny; urgency=low
+
+  * New version: clean textbox-based look, and usage of .conf for vendor data
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Mon, 05 Apr 2010 01:27:02 +0300
+
 eabout (0.3) zelazny; urgency=low
 
   * Fix footer/header and focus issue
