@@ -1,3 +1,9 @@
+eabout (0.5) zelazny; urgency=low
+
+  * Resolve issue with "undead" files
+
+ -- Alexander V. Nikolaev <avn@daemon.hole.ru>  Tue, 06 Apr 2010 00:04:11 +0300
+
 eabout (0.4) zelazny; urgency=low
 
   * New version: clean textbox-based look, and usage of .conf for vendor data
