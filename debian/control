@@ -21,6 +21,20 @@ Architecture: any
 Depends: eabout
 Description: vendor specific data for eabout
 
+Package: eabout-settings-v3
+Priority: optional
+Provides: eabout-settings
+Architecture: any
+Depends: eabout
+Description: vendor specific data for eabout
+
+Package: eabout-settings-v3ext
+Priority: optional
+Provides: eabout-settings
+Architecture: any
+Depends: eabout
+Description: vendor specific data for eabout
+
 Package: eabout-dbg
 Priority: extra
 Architecture: any

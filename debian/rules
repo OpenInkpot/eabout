@@ -5,3 +5,9 @@ DEB_CONFIGURE_SCRIPT := $(CURDIR)/$(DEB_SRCDIR)/autogen.sh
 
 binary-post-install/eabout-settings-azbooka::
 	install -m644 vendors/azbooka.conf debian/eabout-settings-azbooka/etc/eabout.conf
+
+binary-post-install/eabout-settings-v3::
+	install -m644 vendors/v3.conf debian/eabout-settings-v3/etc/eabout.conf
+
+binary-post-install/eabout-settings-v3ext::
+	install -m644 vendors/v3ext.conf debian/eabout-settings-v3ext/etc/eabout.conf
