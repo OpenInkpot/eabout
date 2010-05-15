@@ -1,3 +1,9 @@
+eabout (0.6) zelazny; urgency=low
+
+  * Add settings packages for V3 and V3ext
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 15 May 2010 17:39:57 +0200
+
 eabout (0.5) zelazny; urgency=low
 
   * Resolve issue with "undead" files
