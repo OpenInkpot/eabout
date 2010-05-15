@@ -17,6 +17,8 @@ Description: About dialog
 Package: eabout-settings-azbooka
 Priority: optional
 Provides: eabout-settings
+Conflicts: eabout-settings
+Replaces: eabout-settings
 Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
@@ -24,6 +26,8 @@ Description: vendor specific data for eabout
 Package: eabout-settings-n516
 Priority: optional
 Provides: eabout-settings
+Conflicts: eabout-settings
+Replaces: eabout-settings
 Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
@@ -31,6 +35,8 @@ Description: vendor specific data for eabout
 Package: eabout-settings-v3
 Priority: optional
 Provides: eabout-settings
+Conflicts: eabout-settings
+Replaces: eabout-settings
 Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
@@ -38,6 +44,8 @@ Description: vendor specific data for eabout
 Package: eabout-settings-v3ext
 Priority: optional
 Provides: eabout-settings
+Conflicts: eabout-settings
+Replaces: eabout-settings
 Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
