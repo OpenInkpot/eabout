@@ -11,34 +11,34 @@ Standards-Version: 3.8.3
 Package: eabout
 Priority: optional
 Architecture: any
-Depends: ${shlibs:Depends}, oi-system-report, eabout-settings | eabout-settings-azbooka
+Depends: ${shlibs:Depends}, oi-system-report, eabout-settings
 Description: About dialog
 
 Package: eabout-settings-azbooka
 Priority: optional
 Provides: eabout-settings
-Architecture: any
+Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
 
 Package: eabout-settings-n516
 Priority: optional
 Provides: eabout-settings
-Architecture: any
+Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
 
 Package: eabout-settings-v3
 Priority: optional
 Provides: eabout-settings
-Architecture: any
+Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
 
 Package: eabout-settings-v3ext
 Priority: optional
 Provides: eabout-settings
-Architecture: any
+Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
 
