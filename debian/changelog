@@ -1,3 +1,9 @@
+eabout (0.8) zelazny; urgency=low
+
+  * Fix package dependencies
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 15 May 2010 19:14:52 +0200
+
 eabout (0.7) zelazny; urgency=low
 
   * Add settings package for N516
