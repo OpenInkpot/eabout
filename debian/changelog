@@ -1,3 +1,9 @@
+eabout (0.7) zelazny; urgency=low
+
+  * Add settings package for N516
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Sat, 15 May 2010 17:46:25 +0200
+
 eabout (0.6) zelazny; urgency=low
 
   * Add settings packages for V3 and V3ext
