@@ -18,7 +18,7 @@ struct callback_info
     Ecore_Event_Handler *handler;
 };
 
-static int
+static Eina_Bool
 eabout_load_script_callback(void *data, int type __attribute__((unused)),
     void *event __attribute__((unused)))
 {

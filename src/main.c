@@ -40,7 +40,7 @@ keys_t *get_keys()
 
 
 
-static int exit_handler(void *param __attribute__((unused)),
+static Eina_Bool exit_handler(void *param __attribute__((unused)),
                         int ev_type __attribute__((unused)),
                         void *event __attribute__((unused)))
 {

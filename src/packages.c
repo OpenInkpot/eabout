@@ -4,7 +4,6 @@
 #include <Eina.h>
 #include <Evas.h>
 #include <Edje.h>
-#include <Ecore_Str.h>
 #include <libeoi.h>
 #include <libkeys.h>
 #include <libchoicebox.h>
@@ -37,7 +36,7 @@ static struct package_t *
 eabout_packages_parse_package(const char *line)
 {
     package_t *package = NULL;
-    char **tokens = ecore_str_split(line, " ", 0);
+    char **tokens = eina_str_split(line, " ", 0);
     if(!strcmp(tokens[2], "install"))
     {
         package = calloc(1, sizeof(package_t));
