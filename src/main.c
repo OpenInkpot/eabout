@@ -306,7 +306,7 @@ eabout_key_handler(void *data __attribute__((unused)),
 
 static void run()
 {
-    Ecore_Evas *main_win = ecore_evas_software_x11_new(0, 0, 0, 0, 600, 800);
+    Ecore_Evas *main_win = ecore_evas_software_x11_8_new(0, 0, 0, 0, 600, 800);
     ecore_evas_title_set(main_win, "EAbout");
     ecore_evas_name_class_set(main_win, "EAbout", "EAbout");
 
