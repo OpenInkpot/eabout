@@ -2,9 +2,9 @@ Source: eabout
 Section: gui
 Maintainer: Alexander V. Nikolaev <avn@daemon.hole.ru>
 Uploaders: Mikhail Gusarov <dottedmag@dottedmag.net>, Alexander Kerner <lunohod@openinkpot.org>
-Build-Depends: debhelper (>= 7), cdbs, automake, pkg-config, libecore-dev, libevas-dev, libedje-dev, liblops-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libedje-bin, libefreet-dev
+Build-Depends: debhelper (>= 7), cdbs, automake, pkg-config, libecore-dev (>= 0.9.9.49898-5), libevas-dev, libedje-dev, liblops-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libedje-bin, libefreet-dev
 XCS-Cross-Host-Build-Depends: debhelper (>= 7), cdbs, cdbs-embedded, automake, pkg-config, libedje-bin, oi-help-compiler
-XCS-Cross-Build-Depends: libecore-dev, libevas-dev, libedje-dev, liblops-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libefreet-dev
+XCS-Cross-Build-Depends: libecore-dev (>= 0.9.9.49898-5), libevas-dev, libedje-dev, liblops-dev, libkeys-dev, libeoi-dev (>= 0.2.1), libefreet-dev
 Priority: optional
 Standards-Version: 3.8.3
 
