@@ -1,3 +1,9 @@
+eabout (0.12) zelazny; urgency=low
+
+  * Fix unit of measurement on information screen (Closes: #986)
+
+ -- Mikhail Gusarov <dottedmag@dottedmag.net>  Fri, 31 Dec 2010 14:05:58 +0100
+
 eabout (0.11) zelazny; urgency=low
 
   [ Tomasz Długosz ]
