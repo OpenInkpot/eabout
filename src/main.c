@@ -156,7 +156,7 @@ eabout_fill_info(Evas_Object *textbox)
     fprintf(stream, "%s: %s\n<br>", gettext("Firmware version"), info->version);
     fprintf(stream, "%s: %s (%s MHz)<br>", gettext("CPU"),
                     info->cpu, info->cpu_freq);
-    fprintf(stream, "%s: %dMB<br>", gettext("RAM"), info->ram);
+    fprintf(stream, "%s: %dKiB<br>", gettext("RAM"), info->ram);
     fprintf(stream, "%s: %dMB (%s: %dMB)<br>",
         gettext("Internal memory"), info->storage,
         gettext("Available for user"), info->storage_avail);
