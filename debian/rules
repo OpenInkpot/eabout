@@ -14,3 +14,6 @@ binary-post-install/eabout-settings-v3::
 
 binary-post-install/eabout-settings-v3ext::
 	install -m644 vendors/v3ext.conf debian/eabout-settings-v3ext/etc/eabout.conf
+
+binary-post-install/eabout-settings-eb600::
+	install -m644 vendors/eb600.conf debian/eabout-settings-eb600/etc/eabout.conf
