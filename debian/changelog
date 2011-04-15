@@ -1,3 +1,9 @@
+eabout (0.13) zelazny; urgency=low
+
+  * Add eb600 settings
+
+ -- Alexander Kerner <lunohod@openinkpot.org>  Fri, 15 Apr 2011 19:54:00 +0200
+
 eabout (0.12) zelazny; urgency=low
 
   * Fix unit of measurement on information screen (Closes: #986)
