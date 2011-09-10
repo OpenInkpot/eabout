@@ -17,3 +17,6 @@ binary-post-install/eabout-settings-v3ext::
 
 binary-post-install/eabout-settings-eb600::
 	install -m644 vendors/eb600.conf debian/eabout-settings-eb600/etc/eabout.conf
+
+binary-post-install/eabout-settings-prs505::
+	install -m644 vendors/prs505.conf debian/eabout-settings-prs505/etc/eabout.conf

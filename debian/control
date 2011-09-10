@@ -59,6 +59,15 @@ Architecture: all
 Depends: eabout
 Description: vendor specific data for eabout
 
+Package: eabout-settings-prs505
+Priority: optional
+Provides: eabout-settings
+Conflicts: eabout-settings
+Replaces: eabout-settings
+Architecture: all
+Depends: eabout
+Description: vendor specific data for eabout
+
 Package: eabout-dbg
 Priority: extra
 Architecture: any
