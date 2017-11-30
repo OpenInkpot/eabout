@@ -5,7 +5,7 @@ AM_INIT_AUTOMAKE(foreign)
 AC_LANG_C
 AC_PROG_CC
 
-PKG_CHECK_MODULES(EFL, [ecore ecore-file ecore-evas ecore-x evas edje efreet])
+PKG_CHECK_MODULES(EFL, [ecore ecore-file ecore-evas evas edje efreet eina])
 PKG_CHECK_MODULES(LIBKEYS, [libkeys])
 PKG_CHECK_MODULES(LIBEOI, [libeoi])
 PKG_CHECK_MODULES(LOPS, [liblops])

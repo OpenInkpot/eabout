@@ -14,7 +14,6 @@
 #include <liblops.h>
 #include <Ecore.h>
 #include <Ecore_Evas.h>
-#include <Ecore_X.h>
 #include <Edje.h>
 
 #include <libeoi.h>
@@ -364,11 +363,6 @@ static void run()
     evas_object_del(packages);
 }
 
-static
-void exit_all(void *param __attribute__((unused))) {
-    ecore_main_loop_quit();
-}
-
 int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 {
     setlocale(LC_ALL, "");
@@ -384,7 +378,6 @@ int main(int argc __attribute__((unused)), char **argv __attribute__((unused)))
 
     efreet_init();
 
-    ecore_x_io_error_handler_set(exit_all, NULL);
     ecore_event_handler_add(ECORE_EVENT_SIGNAL_EXIT, exit_handler, NULL);
 
     run();
