@@ -11,4 +11,4 @@ theme_DATA = $(EDJ)
 
 all: $(EDJ)
 %.edj: %.edc
-	edje_cc -o $@ $<
+	edje_cc -id $(<D)/.. -id $(<D) $< $@

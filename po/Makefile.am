@@ -1,7 +1,7 @@
 PACKAGE = @PACKAGE@
 
-POFILES = $(wildcard *.po)
-MOFILES = $(patsubst %.po,%.mo,$(POFILES)) 
+POFILES = $(wildcard $(srcdir)/*.po)
+MOFILES = $(patsubst %.po,%.mo,$(notdir $(POFILES)))
 
 top_builddir = ..
 localedir=$(datadir)/locale
