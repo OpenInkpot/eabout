@@ -305,7 +305,10 @@ eabout_key_handler(void *data __attribute__((unused)),
 
 static void run()
 {
-    Ecore_Evas *main_win = ecore_evas_software_x11_8_new(0, 0, 0, 0, 600, 800);
+    int width, height;
+    Ecore_Evas *main_win = ecore_evas_new(NULL, 0, 0, 1, 1, NULL);
+    ecore_evas_screen_geometry_get(main_win, NULL, NULL, &width, &height);
+    ecore_evas_resize(main_win, width, height);
     ecore_evas_title_set(main_win, "EAbout");
     ecore_evas_name_class_set(main_win, "EAbout", "EAbout");
 
@@ -317,7 +320,7 @@ static void run()
     edje_object_part_text_set(main_canvas_edje, "footer", "");
     edje_object_part_text_set(main_canvas_edje, "title", "");
     evas_object_move(main_canvas_edje, 0, 0);
-    evas_object_resize(main_canvas_edje, 600, 800);
+    evas_object_resize(main_canvas_edje, width, height);
 
 
     eoi_fullwindow_object_register(main_win, main_canvas_edje);
